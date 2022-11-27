@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2015", "DOM"],
+    "target": "ES2017",
+    "outDir": "dist",
+    "declaration": true, // generate d.ts declaration file
+    "module": "CommonJS" // generate code that node can run
+  },
+  "include": ["src"]
+}
