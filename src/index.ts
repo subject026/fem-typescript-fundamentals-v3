@@ -220,22 +220,22 @@ function generateDoorLockCode() {
   return 123;
 }
 
-class Car {
-  public make: string;
-  public model: string;
-  protected vinNumber: number;
-  private doorLockCode: number;
-  constructor(make: string, model: string) {
-    this.make = make;
-    this.model = model;
-    this.vinNumber = generateVinNumber();
-    this.doorLockCode = generateDoorLockCode();
-  }
+// class Car {
+//   public make: string;
+//   public model: string;
+//   protected vinNumber: number;
+//   private doorLockCode: number;
+//   constructor(make: string, model: string) {
+//     this.make = make;
+//     this.model = model;
+//     this.vinNumber = generateVinNumber();
+//     this.doorLockCode = generateDoorLockCode();
+//   }
 
-  protected unlockAllDoors() {
-    // unlockCar(this.doorLockCode)
-  }
-}
+//   protected unlockAllDoors() {
+//     // unlockCar(this.doorLockCode)
+//   }
+// }
 
 class Car2 {
   readonly make: string;
@@ -254,4 +254,32 @@ class Car2 {
 
 class Car3 {
   constructor(public make: string, public model: string, public year: number) {}
+}
+
+// unknown
+
+let unknownThing: unknown = 14;
+
+if (typeof unknownThing === "string") {
+  // this code runs if unknownThing is  string
+} else if (typeof unknownThing === "number") {
+  // this runs if it's a number
+} else {
+  // runs for any other type
+}
+
+class Car {}
+class Boat {}
+
+type Vehicle = Car | Boat;
+
+let myVehicle: Vehicle = new Car();
+
+if (myVehicle instanceof Car) {
+  // do something
+} else if (myVehicle instanceof Boat) {
+  // do something
+} else {
+  // this will run if there we're not handling one of the types held by the Vehicle union
+  const neverValue: never = myVehicle;
 }
