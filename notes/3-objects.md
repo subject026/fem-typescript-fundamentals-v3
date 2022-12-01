@@ -35,3 +35,24 @@ printCar({
 // this is fine as we might have needed to access color before passing the object as an arg
 printCar(someCar);
 ```
+
+## Dictionaries
+
+Objects where values of a consistent type are retreivable by keys.
+
+```ts
+const dict = {
+  home: { country: "+44", area: "01222", number: "111111" },
+  work: { country: "+44", area: "01222", number: "222222" },
+  fax: { country: "+44", area: "01222", number: "333333" },
+};
+
+const phones: {
+  // can describe this as an index signature
+  [k: string]: {
+    country: string;
+    area: string;
+    number: string;
+  };
+} = {};
+```
