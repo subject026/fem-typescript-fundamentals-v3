@@ -139,7 +139,7 @@ isJSON(() => "");
 // @ts-expect-error
 isJSON(class {});
 // something has changed in rts spec? => @ts-expect-error
-isJSON(undefined);
+// isJSON(undefined);
 // @ts-expect-error
 isJSON(new BigInt(143));
 // @ts-expect-error
@@ -282,4 +282,134 @@ if (myVehicle instanceof Car) {
 } else {
   // this will run if there we're not handling one of the types held by the Vehicle union
   const neverValue: never = myVehicle;
+}
+
+// guards and narrowing
+
+// built in
+
+let value:
+  | Date
+  | null
+  | undefined
+  | "pineapple"
+  | [number]
+  | { dateRange: [Date, Date] };
+
+// instanceof
+if (value instanceof Date) {
+  // value -> Date
+}
+
+// typeof
+else if (typeof value === "string") {
+  // value -> "pineapple"
+}
+
+// specific value check
+else if (typeof value === null) {
+  // value -> null
+}
+
+// truthy / falsey
+else if (!value) {
+  // value -> undefined
+}
+
+// some built-in functions
+else if (Array.isArray(value)) {
+  // value -> [number]
+}
+
+// property presence check
+else if ("dateRange" in value) {
+  // value -> "pineapple"
+}
+
+// all potential types exhausted
+else {
+  // value -> never;
+}
+
+// User Defined
+
+// let maybeCar: unknown;
+
+// if (
+//   maybeCar &&
+//   typeof maybeCar === "object" &&
+//   "make" in maybeCar &&
+//   typeof maybeCar["make"] === "string" &&
+//   "model" in maybeCar &&
+//   typeof maybeCar["model"] === "string" &&
+//   "year" in maybeCar &&
+//   typeof maybeCar["year"] === "number"
+// ) {
+//   maybeCar;
+// }
+
+interface CarLike {
+  make: string;
+  model: string;
+  year: string;
+}
+
+// specific return type tells TS boolean returned should be taken as indication of whether
+// the value to test confirms to the type
+function isCarLike(value: any): value is CarLike {
+  return (
+    value &&
+    typeof value === "object" &&
+    "make" in value &&
+    typeof value["make"] === "string" &&
+    "model" in value &&
+    typeof value["model"] === "string" &&
+    "year" in value &&
+    typeof value["year"] === "number"
+  );
+}
+
+let maybeCar: unknown;
+
+if (isCarLike(maybeCar)) {
+  maybeCar; // maybeCar: CarLike
+}
+
+function assertCarLike(value: unknown): asserts value is CarLike {
+  if (!isCarLike(value))
+    throw new Error(`Value does not appear to be CarLike ${value}`);
+}
+
+// non null assertion
+
+type GroceryCart = {
+  fruits?: { name: string; qty: number }[];
+  vegetables?: { name: string; qty: number }[];
+};
+
+const shopping: GroceryCart = {};
+
+// fruits could be undefined so this will err
+// shopping.fruits.push({ name: "bean", qty: 1 });
+
+// this will not annoy ts but will err at runtime
+shopping.fruits!.push({ name: "bean", qty: 1 });
+
+class ThingWithAsyncSetup {
+  setupPromise: Promise<any>;
+  // add a bang
+  isSetup!: boolean;
+
+  constructor() {
+    this.setupPromise = new Promise((resolve) => {
+      this.isSetup = false;
+      return this.doSetup().then(() => {
+        this.isSetup = true;
+      });
+    });
+  }
+
+  private async doSetup() {
+    // do something async
+  }
 }

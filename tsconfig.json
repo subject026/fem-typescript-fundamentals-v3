@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "lib": ["ES2015", "DOM"],
     "target": "ES2017",
     "outDir": "dist",
